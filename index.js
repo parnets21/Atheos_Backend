@@ -37,7 +37,6 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
     credentials: true
   },
-  transports: ['websocket', 'polling']
 });
 
 // Store connected admins and their watched employees
@@ -154,8 +153,12 @@ app.use("/api/fcm",fcm)
 
 
 // Basic route for testing
-app.get("/", (req, res) => {
-  res.json({ message: "Server is running" });
+app.use(express.static(path.join(__dirname, 'build'))); // Change 'build' to your frontend folder if needed
+
+// Redirect all requests to the index.html file
+
+app.get("*", (req, res) => {
+  return  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Improved MongoDB connection
