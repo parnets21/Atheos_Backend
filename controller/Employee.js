@@ -910,6 +910,8 @@ class Employee {
       // Set JSON response headers
       res.setHeader("Content-Type", "application/json")
 
+      const ProfilePhoto = req.file
+
       // Check if file was uploaded
       if (!ProfilePhoto) {
         return res.status(400).json({
@@ -917,8 +919,6 @@ class Employee {
           message: "No file uploaded. Make sure to use field name 'ProfilePhoto'",
         });
       }
-
-      const ProfilePhoto = req.file
       console.log("File details:", {
         fieldname: ProfilePhoto.fieldname,
         originalname: ProfilePhoto.originalname,

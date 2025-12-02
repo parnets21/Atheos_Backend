@@ -111,7 +111,7 @@ router.post("", EmployeeController.loginEmployee); // This will match /api/admin
 // In your employee routes file
 router.post("/addEmployee",
     protect,
-    authorize("admin", "siteManager", "topManagement", "middleManagement", "permanentReliever", "assistantManager", "housekeeper", "FOE"),
+    authorize("admin", "siteManager", "topManagement", "middleManagement", "permanentReliever", "assistantManager", "housekeeper", "FOE", "employee"),
     (req, res, next) => {
         // Force Pending status for site managers
         if (req.user && req.user.role === 'siteManager') {

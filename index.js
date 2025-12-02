@@ -155,10 +155,26 @@ app.use("/api/fcm",fcm)
 // Basic route for testing
 app.use(express.static(path.join(__dirname, 'build'))); // Change 'build' to your frontend folder if needed
 
-// Redirect all requests to the index.html file
+// Global error handler for API routes - must be before the catch-all
+app.use('/api', (err, req, res, next) => {
+  console.error('API Error:', err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal server error',
+    error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
+});
 
+// Redirect all non-API requests to the index.html file
 app.get("*", (req, res) => {
-  return  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  // Don't serve HTML for API routes
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ 
+      success: false, 
+      message: 'API endpoint not found' 
+    });
+  }
+  return res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 // Improved MongoDB connection
