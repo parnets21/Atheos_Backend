@@ -185,6 +185,11 @@ EmployeeSchema.methods.comparePassword = async function (candidatePassword) {
 
 // Method to set role based on designation
 EmployeeSchema.methods.setRoleFromDesignation = function () {
+    // Guard against undefined or null Designation
+    if (!this.Designation) {
+        this.Role = 'employee';
+        return;
+    }
     const designation = this.Designation.toLowerCase();
 
     if (designation.includes('site manager')) {
